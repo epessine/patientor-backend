@@ -1,10 +1,5 @@
 import diagnoses from '../data/diagnoses.json';
-
-export interface Diagnose {
-  code: string,
-  name: string,
-  latin?: string
-}
+import { Diagnose } from '../types';
 
 export const getDiagnoses = (): Diagnose[] => {
   return diagnoses;
