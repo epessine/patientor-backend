@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { getDiagnoses } from './services/diagnoseService';
-import { getPatientsNoSsn, addPatient, toPatientEntry } from './services/patientService';
+import { getPatientsNoSsn, addPatient, toPatientEntry, getSinglePatient } from './services/patientService';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +20,16 @@ app.get('/api/diagnoses', (_req, res) => {
 app.get('/api/patients', (_req, res) => {
   const patients = getPatientsNoSsn();
   res.send(patients);
+});
+
+app.get('/api/patients/:id', (req, res) => {
+  const id = req.params.id;
+  try {
+    const patient = getSinglePatient(id);
+    res.send(patient);
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
 });
 
 app.post('/api/patients', (req, res) => {
