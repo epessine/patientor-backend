@@ -53,16 +53,8 @@ export const toPatientEntry = (object: any): NewPatient => {
   return entry;
 };
 
-export const getSinglePatient = (id: string): PublicPatient => {
+export const getSinglePatient = (id: string): Patient => {
   const patient = getPatients().find(patient => patient.id === id);
   if (!patient) throw new Error('patient not found');
-  const publicPatient = {
-    id: patient.id,
-    name: patient.name,
-    dateOfBirth: patient.dateOfBirth,
-    gender: patient.gender,
-    occupation: patient.occupation,
-    entries: []
-  };
-  return publicPatient;
+  return patient;
 };
