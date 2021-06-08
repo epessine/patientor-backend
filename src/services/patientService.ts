@@ -1,9 +1,9 @@
-import patients from '../data/patients.json';
+import patients from '../data/patients';
 import { Patient, PublicPatient, NewPatient } from '../types';
 import { v1 as uuid } from 'uuid';
 import { parseName, parseDate, parseSsn, parseGender, parseOccupation } from '../utils';
 
-let allPatients = patients as Patient[];
+let allPatients = patients;
 
 export const getPatients = (): Patient[] => {
   return allPatients;
