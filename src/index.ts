@@ -1,7 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import { getDiagnoses } from './services/diagnoseService';
-import { getPatientsNoSsn, addPatient, toPatientEntry, getSinglePatient } from './services/patientService';
+import dotenv from 'dotenv';
+import patientsRouter from './routes/api/patients';
+import diagnosesRouter from './routes/api/diagnoses';
+
+const result = dotenv.config();
+if (result.error) throw result.error;
 
 const app = express();
 app.use(express.json());
@@ -12,37 +16,11 @@ app.get('/api/ping', (_req, res) => {
   res.send('pong');
 });
 
-app.get('/api/diagnoses', (_req, res) => {
-  const diagnoses = getDiagnoses();
-  res.send(diagnoses);
-});
+app.use('/api/diagnoses', diagnosesRouter);
 
-app.get('/api/patients', (_req, res) => {
-  const patients = getPatientsNoSsn();
-  res.send(patients);
-});
+app.use('/api/patients', patientsRouter);
 
-app.get('/api/patients/:id', (req, res) => {
-  const id = req.params.id;
-  try {
-    const patient = getSinglePatient(id);
-    res.send(patient);
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
-});
-
-app.post('/api/patients', (req, res) => {
-  try {
-    const parsedEntry = toPatientEntry(req.body);
-    const newPatient = addPatient(parsedEntry);
-    res.json(newPatient);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-});
-
-const PORT = 3001;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
